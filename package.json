@@ -1,0 +1,30 @@
+{
+  "name": "yo-fs",
+  "version": "1.0.0",
+  "description": "a filesystem browser built with yo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karissa/yo-fs.git"
+  },
+  "keywords": [
+    "file",
+    "system",
+    "directories",
+    "yo-yo",
+    "yo",
+    "ui",
+    "web",
+    "browser",
+    "client"
+  ],
+  "author": "karissa mckelvey",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/karissa/yo-fs/issues"
+  },
+  "homepage": "https://github.com/karissa/yo-fs#readme"
+}
