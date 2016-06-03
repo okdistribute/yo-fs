@@ -8,7 +8,6 @@ module.exports = render
 
 function render (widget, root, entries, onclick) {
   var fresh = Tree(widget, root, entries, onclick)
-  console.log(widget, fresh)
   if (widget) yo.update(widget, fresh)
   return fresh
 }
@@ -38,7 +37,6 @@ function Tree (widget, root, entries, onclick) {
   </div>`
 
   function backButton () {
-    console.log('clicked')
     render(widget, path.dirname(root), entries, onclick)
   }
   function backRow () {
@@ -64,7 +62,7 @@ function Tree (widget, root, entries, onclick) {
       }
       onclick(e, entry)
     }
-    return yo`<li class='entry-${entry.type}' onclick=${click}>
+    return yo`<li class='entry ${entry.type}' onclick=${click}>
       <a href="javascript:void(0)">
         <span class="name">${path.basename(entry.name)}</span>
         <span class="modified">${relative(entry.mtime)}</span>
