@@ -1,5 +1,4 @@
 var relative = require('relative-date')
-var data = require('render-data')
 var pretty = require('pretty-bytes')
 var path = require('path')
 var yo = require('yo-yo')
@@ -57,15 +56,7 @@ function Tree (widget, root, entries, onclick) {
   function row (entry) {
     function click (e) {
       onclick(e, entry)
-      if (entry.type === 'directory') {
-        render(widget, entry.name, entries, onclick)
-      } else if (entry.type === 'file') {
-        var el = yo`<div id="data-viewport"></div>`
-        data.render(entry, el, function (err, elem) {
-          if (err) throw err
-          yo.update(widget, elem)
-        })
-      }
+      if (entry.type === 'directory') render(widget, entry.name, entries, onclick)
     }
     return yo`<li class='entry ${entry.type}' onclick=${click}>
       <a href="javascript:void(0)">
