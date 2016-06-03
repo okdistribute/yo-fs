@@ -36,8 +36,13 @@ function Tree (widget, root, entries, onclick) {
       </ul>
   </div>`
 
-  function backButton () {
-    render(widget, path.dirname(root), entries, onclick)
+  function backButton (ev) {
+    var entry = {
+      name: path.dirname(root),
+      type: 'directory'
+    }
+    onclick(ev, entry)
+    render(widget, entry.name, entries, onclick)
   }
   function backRow () {
     if (root === '/') return
@@ -51,6 +56,7 @@ function Tree (widget, root, entries, onclick) {
 
   function row (entry) {
     function click (e) {
+      onclick(e, entry)
       if (entry.type === 'directory') {
         render(widget, entry.name, entries, onclick)
       } else if (entry.type === 'file') {
@@ -60,7 +66,6 @@ function Tree (widget, root, entries, onclick) {
           console.log('done')
         })
       }
-      onclick(e, entry)
     }
     return yo`<li class='entry ${entry.type}' onclick=${click}>
       <a href="javascript:void(0)">
