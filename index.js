@@ -63,7 +63,6 @@ function Tree (widget, root, entries, onclick) {
         var el = yo`<div id="data-viewport"></div>`
         data.render(entry, el, function (err, elem) {
           if (err) throw err
-          console.log('done')
           yo.update(widget, elem)
         })
       }
