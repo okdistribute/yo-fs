@@ -1,6 +1,7 @@
 var relative = require('relative-date')
 var data = require('render-data')
 var pretty = require('pretty-bytes')
+var path = require('path')
 var yo = require('yo-yo')
 
 module.exports = render
@@ -27,11 +28,28 @@ function Tree (widget, root, entries, onclick) {
   })
 
 
-  return yo`<ul id="file-widget">
-    ${visible.map(function (entry) {
-      return row(entry)
-    })}
-  </ul>`
+  var el = yo`<div id="yo-fs">
+    <ul id="file-widget">
+      ${backRow()}
+      ${visible.map(function (entry) {
+        return row(entry)
+      })}
+      </ul>
+  </div>`
+
+  function backButton () {
+    console.log('clicked')
+    render(widget, path.dirname(root), entries, onclick)
+  }
+  function backRow () {
+    if (root === '/') return
+    return yo`<li class='entry-back' onclick=${backButton}>
+      <a href='javascript:void(0)'>
+        <span class="name">..</span>
+      </a>
+    </li>`
+  }
+  return el
 
   function row (entry) {
     function click (e) {
@@ -48,7 +66,7 @@ function Tree (widget, root, entries, onclick) {
     }
     return yo`<li class='entry-${entry.type}' onclick=${click}>
       <a href="javascript:void(0)">
-        <span class="name">${entry.name}</span>
+        <span class="name">${path.basename(entry.name)}</span>
         <span class="modified">${relative(entry.mtime)}</span>
         <span class="size">${pretty(entry.length)}</span>
       </a>
