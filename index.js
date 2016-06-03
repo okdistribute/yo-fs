@@ -64,6 +64,7 @@ function Tree (widget, root, entries, onclick) {
         data.render(entry, el, function (err, elem) {
           if (err) throw err
           console.log('done')
+          yo.update(widget, elem)
         })
       }
     }

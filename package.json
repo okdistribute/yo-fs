@@ -1,7 +1,7 @@
 {
   "name": "yo-fs",
   "version": "1.0.2",
-  "description": "a filesystem browser built with yo",
+  "description": "A client-side modular stream-friendly ui browser widget for navigating directories.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
