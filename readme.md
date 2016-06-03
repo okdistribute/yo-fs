@@ -6,7 +6,7 @@ A client-side modular, stream-friendly ui browser widget for navigating director
 
 ## api
 
-#### `yofs(widget, root, entries, onclick)`
+#### `yofs(widget, path, entries, onclick)`
 
   * `widget`: if we already have a widget, update it, otherwise make a new one.
   * `path`: the directory or filename to display
