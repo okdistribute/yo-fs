@@ -61,13 +61,13 @@ function Tree (widget, root, entries, onclick) {
     return yo`<li class='entry ${entry.type}' onclick=${click}>
       <a href="javascript:void(0)">
         <span class="name">${path.basename(entry.name)}</span>
-        <span class="modified">${relative(entry.mtime)}</span>
+        <span class="modified">${entry.mtime ? relative(entry.mtime) : ''}</span>
         <span class="size">${pretty(entry.length)}</span>
       </a>
     </li>`
   }
-
 }
+
 
 function split (pathName) {
   var fileArray = pathName.split('/')
