@@ -1,5 +1,5 @@
 var relative = require('relative-date')
-var pretty = require('pretty-bytes')
+var pretty = require('prettier-bytes')
 var path = require('path')
 var yo = require('yo-yo')
 
