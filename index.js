@@ -3,15 +3,9 @@ var pretty = require('pretty-bytes')
 var path = require('path')
 var yo = require('yo-yo')
 
-module.exports = render
+module.exports = Tree
 
-function render (widget, root, entries, onclick) {
-  var fresh = Tree(widget, root, entries, onclick)
-  if (widget) yo.update(widget, fresh)
-  return fresh
-}
-
-function Tree (widget, root, entries, onclick) {
+function Tree (root, entries, onclick) {
   var visible = []
   var roots = split(root)
   entries.forEach(function (entry) {
@@ -41,7 +35,7 @@ function Tree (widget, root, entries, onclick) {
       type: 'directory'
     }
     onclick(ev, entry)
-    render(widget, entry.name, entries, onclick)
+    yo.update(el, Tree(entry.name, entries, onclick))
   }
   function backRow () {
     if (root === '/') return
@@ -56,7 +50,7 @@ function Tree (widget, root, entries, onclick) {
   function row (entry) {
     function click (e) {
       onclick(e, entry)
-      if (entry.type === 'directory') render(widget, entry.name, entries, onclick)
+      if (entry.type === 'directory') yo.update(el, Tree(entry.name, entries, onclick))
     }
     return yo`<li class='entry ${entry.type}' onclick=${click}>
       <a href="javascript:void(0)">
