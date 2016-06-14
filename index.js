@@ -1,17 +1,27 @@
 var relative = require('relative-date')
 var pretty = require('prettier-bytes')
 var path = require('path')
+var data = require('render-data')
 var yo = require('yo-yo')
 
-module.exports = render
+module.exports = Tree
 
-function render (widget, root, entries, onclick) {
-  var fresh = Tree(widget, root, entries, onclick)
-  if (widget) yo.update(widget, fresh)
-  return fresh
+function Tree (root, entries, onclick) {
+  if (!(this instanceof Tree)) return new Tree(root, entries, onclick)
+  this.widget = this.render(root, entries, onclick)
 }
 
-function Tree (widget, root, entries, onclick) {
+
+Tree.prototype.update = function (fresh) {
+  var self = this
+  console.log('widget', self.widget)
+  console.log('fresh', fresh)
+  yo.update(self.widget, fresh)
+}
+
+Tree.prototype.render = function (root, entries, onclick) {
+  console.log(root, entries)
+  var self = this
   var visible = []
   var roots = split(root)
   entries.forEach(function (entry) {
@@ -24,16 +34,22 @@ function Tree (widget, root, entries, onclick) {
       if (isChild === true) visible.push(entry)
     }
   })
-
-
-  var el = yo`<div id="yo-fs">
+  var displayId = 'display'
+  var display = yo`<div id="${displayId}"></div>`
+  var fs = yo`<div id="fs">
     <ul id="file-widget">
       ${backRow()}
       ${visible.map(function (entry) {
-        return row(entry)
+          return row(entry)
       })}
-      </ul>
+    </ul>
   </div>`
+
+  var widget = yo`<div id="yo-fs">
+    ${fs}
+  </div>`
+
+  return widget
 
   function backButton (ev) {
     var entry = {
@@ -41,8 +57,9 @@ function Tree (widget, root, entries, onclick) {
       type: 'directory'
     }
     onclick(ev, entry)
-    render(widget, entry.name, entries, onclick)
+    self.update(self.render(entry.name, entries, onclick))
   }
+
   function backRow () {
     if (root === '/') return
     return yo`<li class='entry-back' onclick=${backButton}>
@@ -51,12 +68,24 @@ function Tree (widget, root, entries, onclick) {
       </a>
     </li>`
   }
-  return el
 
   function row (entry) {
     function click (e) {
       onclick(e, entry)
-      if (entry.type === 'directory') render(widget, entry.name, entries, onclick)
+      root = entry.name
+      console.log('click', entry)
+      if (entry.type === 'directory') {
+        //document.querySelector(displayId).innerHTML = ''
+        self.update(self.render(entry.name, entries, onclick))
+      }
+      if (entry.type === 'file') {
+        data.render({
+          name: entry.name,
+          createReadStream: entry.createReadStream
+        }, display, function (err) {
+          if (err) throw err
+        })
+      }
     }
     return yo`<li class='entry ${entry.type}' onclick=${click}>
       <a href="javascript:void(0)">
@@ -67,7 +96,6 @@ function Tree (widget, root, entries, onclick) {
     </li>`
   }
 }
-
 
 function split (pathName) {
   var fileArray = pathName.split('/')
