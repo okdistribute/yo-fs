@@ -17,18 +17,28 @@ A client-side modular, stream-friendly ui browser widget for navigating director
 
 ```js
 var yofs = require('yo-fs')
+var yo = require('yo-yo')
 
-var onclick = function (event, entry) {
+var entries = []
+
+function onclick (event, entry) {
   console.log('i clicked', entry)
 }
 
-var el = yofs(null, '/', entries, onclick)
+// only create the top-level element once
+var el = yofs('/', entries, onclick)
 document.body.appendChild(el)
+
+// update the tree's internal html widget using yo
+function update () {
+  var fresh = tree.render('/', entries, onclick)
+  yo.update(tree.widget, fresh)
+}
 
 var stream = //stream that gives me some data...
 
 stream.on('data', function (entry) {
   entries.push(entry)
-  yofs(widget, '/', entries, onclick) // dynamically updates the widget
+  update()
 }
 ```
