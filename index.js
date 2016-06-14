@@ -11,16 +11,12 @@ function Tree (root, entries, onclick) {
   this.widget = this.render(root, entries, onclick)
 }
 
-
 Tree.prototype.update = function (fresh) {
   var self = this
-  console.log('widget', self.widget)
-  console.log('fresh', fresh)
   yo.update(self.widget, fresh)
 }
 
 Tree.prototype.render = function (root, entries, onclick) {
-  console.log(root, entries)
   var self = this
   var visible = []
   var roots = split(root)
@@ -47,6 +43,7 @@ Tree.prototype.render = function (root, entries, onclick) {
 
   var widget = yo`<div id="yo-fs">
     ${fs}
+    ${display}
   </div>`
 
   return widget
@@ -72,17 +69,15 @@ Tree.prototype.render = function (root, entries, onclick) {
   function row (entry) {
     function click (e) {
       onclick(e, entry)
-      root = entry.name
-      console.log('click', entry)
       if (entry.type === 'directory') {
-        //document.querySelector(displayId).innerHTML = ''
+        document.getElementById(displayId).innerHTML = ''
         self.update(self.render(entry.name, entries, onclick))
       }
       if (entry.type === 'file') {
         data.render({
           name: entry.name,
           createReadStream: entry.createReadStream
-        }, display, function (err) {
+        }, document.getElementById(displayId), function (err) {
           if (err) throw err
         })
       }
