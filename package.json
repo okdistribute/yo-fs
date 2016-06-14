@@ -1,6 +1,6 @@
 {
   "name": "yo-fs",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A client-side modular stream-friendly ui browser widget for navigating directories.",
   "main": "index.js",
   "scripts": {
