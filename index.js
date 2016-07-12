@@ -36,7 +36,7 @@ Tree.prototype.render = function (root, entries, onclick) {
     <ul id="file-widget">
       ${backRow()}
       ${visible.map(function (entry) {
-          return row(entry)
+        return row(entry)
       })}
     </ul>
   </div>`
@@ -69,16 +69,20 @@ Tree.prototype.render = function (root, entries, onclick) {
   function row (entry) {
     function click (e) {
       onclick(e, entry)
+      var displayElem = document.getElementById(displayId)
       if (entry.type === 'directory') {
-        document.getElementById(displayId).innerHTML = ''
+        displayElem.innerHTML = ''
         self.update(self.render(entry.name, entries, onclick))
       }
       if (entry.type === 'file') {
         data.render({
           name: entry.name,
           createReadStream: entry.createReadStream
-        }, document.getElementById(displayId), function (err) {
-          if (err) throw err
+        }, displayElem, function (err) {
+          if (err) {
+            var ext = path.extname(entry.name)
+            displayElem.innerHTML = '<div class="render-error">Can not display ' + ext + ' files.</div>'
+          }
         })
       }
     }
