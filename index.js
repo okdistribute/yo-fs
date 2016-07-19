@@ -58,7 +58,7 @@ Tree.prototype.render = function (root, entries, onclick) {
   }
 
   function backRow () {
-    if (root === '/') return
+    if (root === '/' || root === '' || root === '.') return
     return yo`<li class='entry-back' onclick=${backButton}>
       <a href='javascript:void(0)'>
         <span class="name">..</span>
