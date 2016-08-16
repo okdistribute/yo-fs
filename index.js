@@ -68,7 +68,7 @@ Tree.prototype.render = function (root, entries, onclick) {
 
   function row (entry) {
     function click (e) {
-      onclick(e, entry)
+      if (onclick(e, entry) === false) return
       var displayElem = document.getElementById(displayId)
       if (entry.type === 'directory') {
         displayElem.innerHTML = ''
