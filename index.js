@@ -88,7 +88,7 @@ Tree.prototype.render = function (root, entries, onclick) {
       <td class="name">${path.basename(entry.name)}</td>
       <td class="modified">${entry.mtime ? relative(entry.mtime) : ''}</td>
       <td class="size">${pretty(entry.length)}</td>
-    </li>`
+    </tr>`
   }
 }
 
