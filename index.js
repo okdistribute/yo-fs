@@ -60,9 +60,7 @@ Tree.prototype.render = function (root, entries, onclick) {
   function backRow () {
     if (root === '/' || root === '' || root === '.') return
     return yo`<li class='entry-back' onclick=${backButton}>
-      <a href='javascript:void(0)'>
-        <span class="name">..</span>
-      </a>
+      <span class="name">..</span>
     </li>`
   }
 
@@ -87,11 +85,9 @@ Tree.prototype.render = function (root, entries, onclick) {
       }
     }
     return yo`<li class='entry ${entry.type}' onclick=${click}>
-      <a href="javascript:void(0)">
-        <span class="name">${path.basename(entry.name)}</span>
-        <span class="modified">${entry.mtime ? relative(entry.mtime) : ''}</span>
-        <span class="size">${pretty(entry.length)}</span>
-      </a>
+      <span class="name">${path.basename(entry.name)}</span>
+      <span class="modified">${entry.mtime ? relative(entry.mtime) : ''}</span>
+      <span class="size">${pretty(entry.length)}</span>
     </li>`
   }
 }
