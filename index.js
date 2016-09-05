@@ -33,12 +33,12 @@ Tree.prototype.render = function (root, entries, onclick) {
   var displayId = 'display'
   var display = yo`<div id="${displayId}"></div>`
   var fs = yo`<div id="fs">
-    <ul id="file-widget">
+    <table id="file-widget">
       ${backRow()}
       ${visible.map(function (entry) {
         return row(entry)
       })}
-    </ul>
+    </table>
   </div>`
 
   var widget = yo`<div id="yo-fs">
@@ -59,9 +59,9 @@ Tree.prototype.render = function (root, entries, onclick) {
 
   function backRow () {
     if (root === '/' || root === '' || root === '.') return
-    return yo`<li class='entry-back' onclick=${backButton}>
-      <span class="name">..</span>
-    </li>`
+    return yo`<tr class='entry-back' onclick=${backButton}>
+      <td colspan="2" class="name">..</td>
+    </tr>`
   }
 
   function row (entry) {
@@ -84,10 +84,10 @@ Tree.prototype.render = function (root, entries, onclick) {
         })
       }
     }
-    return yo`<li class='entry ${entry.type}' onclick=${click}>
-      <span class="name">${path.basename(entry.name)}</span>
-      <span class="modified">${entry.mtime ? relative(entry.mtime) : ''}</span>
-      <span class="size">${pretty(entry.length)}</span>
+    return yo`tr class='entry ${entry.type}' onclick=${click}>
+      <td class="name">${path.basename(entry.name)}</td>
+      <td class="modified">${entry.mtime ? relative(entry.mtime) : ''}</td>
+      <td class="size">${pretty(entry.length)}</td>
     </li>`
   }
 }
