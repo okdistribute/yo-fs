@@ -60,7 +60,7 @@ Tree.prototype.render = function (root, entries, onclick) {
   function backRow () {
     if (root === '/' || root === '' || root === '.') return
     return yo`<tr class='entry-back' onclick=${backButton}>
-      <td colspan="2" class="name">..</td>
+      <td colspan="3" class="name">..</td>
     </tr>`
   }
 
