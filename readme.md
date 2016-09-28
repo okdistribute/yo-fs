@@ -2,6 +2,8 @@
 
 A client-side modular, stream-friendly ui browser widget for navigating directories, built with [yo-yo](npmjs.org/yo-yo).
 
+Can also be used in server-side applications to statically render directory trees via javascript.
+
 [![NPM](https://nodei.co/npm/yo-fs.png)](https://nodei.co/npm/yo-fs/)
 
 ## api
@@ -10,7 +12,7 @@ A client-side modular, stream-friendly ui browser widget for navigating director
 
   * `path`: the directory or filename to display
   * `entries`: a list of entries with `name`, `size`, `modified`, `createReadStream`
-  * `onclick`: fires when a folder, file, or back button is clicked.
+  * `onclick`: fires when a folder, file, or back button is clicked. onclick is no-opped for server-side renderings.
 
 ## example
 

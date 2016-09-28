@@ -1,13 +1,14 @@
 var relative = require('relative-date')
 var pretty = require('prettier-bytes')
 var path = require('path')
-var data = require('render-data')
 var yo = require('yo-yo')
+var data = module.parent ? null : require('render-data')
 
 module.exports = Tree
 
 function Tree (root, entries, onclick) {
   if (!(this instanceof Tree)) return new Tree(root, entries, onclick)
+  if (module.parent) onclick = function () {}
   this.widget = this.render(root, entries, onclick)
 }
 
