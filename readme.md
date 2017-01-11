@@ -6,10 +6,11 @@ A client-side modular, stream-friendly ui browser widget for navigating director
 
 ## api
 
-#### `yofs(path, entries, onclick)`
+#### `yofs(path, entries, [opts], onclick)`
 
   * `path`: the directory or filename to display
   * `entries`: a list of entries with `name`, `size`, `modified`, `createReadStream`
+  * `opts`: `{offset: 0, limit: entries.length}` page the entry list
   * `onclick`: fires when a folder, file, or back button is clicked.
 
 ## example
@@ -19,18 +20,22 @@ var yofs = require('yo-fs')
 var yo = require('yo-yo')
 
 var entries = []
+var opts = {
+  offset: 0,
+  limit: 10 // only show 10 files at a time
+}
 
 function onclick (event, entry) {
   console.log('i clicked', entry)
 }
 
 // only create the top-level element once
-var el = yofs('/', entries, onclick)
+var el = yofs('/', entries, opts, onclick)
 document.body.appendChild(el)
 
 // update the tree's internal html widget using yo
 function update () {
-  var fresh = tree.render('/', entries, onclick)
+  var fresh = tree.render('/', entries, opts, onclick)
   yo.update(tree.widget, fresh)
 }
 
