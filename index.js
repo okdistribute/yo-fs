@@ -84,11 +84,11 @@ Tree.prototype.render = function (root, entries, onclick) {
         })
       }
     }
-    var size = entry.size || entry.length
+    var size = typeof entry.size === 'number' ? entry.size : entry.length
     return yo`<tr class='entry ${entry.type}' onclick=${click}>
       <td class="name">${path.basename(entry.name)}</td>
       <td class="modified">${entry.mtime ? relative(entry.mtime) : ''}</td>
-      <td class="size">${size ? pretty(size) : '??'}</td>
+      <td class="size">${pretty(size)}</td>
     </tr>`
   }
 }
