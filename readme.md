@@ -1,6 +1,6 @@
 # yo-fs
 
-A client-side modular, stream-friendly ui browser widget for navigating directories, built with [yo-yo](npmjs.org/yo-yo).
+A client-side modular, stream-friendly ui browser widget for navigating directories, built with [yo-yo](https://www.npmjs.org/yo-yo).
 
 [![NPM](https://nodei.co/npm/yo-fs.png)](https://nodei.co/npm/yo-fs/)
 
