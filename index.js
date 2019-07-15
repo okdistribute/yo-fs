@@ -6,9 +6,10 @@ var yo = require('yo-yo')
 
 module.exports = Tree
 
-function Tree (root, entries, onclick) {
-  if (!(this instanceof Tree)) return new Tree(root, entries, onclick)
-  this.widget = this.render(root, entries, onclick)
+function Tree (root, entries, opts, onclick) {
+  if (!(this instanceof Tree)) return new Tree(root, entries, opts, onclick)
+  if (typeof opts === 'function') return Tree(root, entries, {}, opts)
+  this.widget = this.render(root, entries, opts, onclick)
 }
 
 Tree.prototype.update = function (fresh) {
@@ -16,7 +17,8 @@ Tree.prototype.update = function (fresh) {
   yo.update(self.widget, fresh)
 }
 
-Tree.prototype.render = function (root, entries, onclick) {
+Tree.prototype.render = function (root, entries, opts, onclick) {
+  if (typeof opts === 'function') return this.render(root, entries, {}, opts)
   var self = this
   var visible = []
   var roots = split(root)
@@ -30,15 +32,20 @@ Tree.prototype.render = function (root, entries, onclick) {
       if (isChild === true) visible.push(entry)
     }
   })
+  var start = opts.offset ? opts.offset : 0
+  var end = opts.limit ? opts.limit + start : visible.length
+  var paged = visible.slice(start, end)
+
   var displayId = 'display'
   var display = yo`<div id="${displayId}"></div>`
   var fs = yo`<div id="fs">
     <table id="file-widget">
       ${backRow()}
-      ${visible.map(function (entry) {
+      ${paged.map(function (entry) {
         return row(entry)
       })}
     </table>
+    ${pagination()}
   </div>`
 
   var widget = yo`<div id="yo-fs">
@@ -53,8 +60,12 @@ Tree.prototype.render = function (root, entries, onclick) {
       name: path.dirname(root),
       type: 'directory'
     }
+    var newOpts = {
+      offset: 0, // reset offset for back
+      limit: opts.limit
+    }
     onclick(ev, entry)
-    self.update(self.render(entry.name, entries, onclick))
+    self.update(self.render(entry.name, entries, newOpts, onclick))
   }
 
   function backRow () {
@@ -64,13 +75,46 @@ Tree.prototype.render = function (root, entries, onclick) {
     </tr>`
   }
 
+  function nextPage (ev) {
+    var newOpts = {
+      limit: opts.limit,
+      offset: end
+    }
+    onclick(ev, null, newOpts)
+    self.update(self.render(root, entries, newOpts, onclick))
+  }
+
+  function prevPage (ev) {
+    var newOpts = {
+      limit: opts.limit,
+      offset: start - opts.limit
+    }
+    onclick(ev, null, newOpts)
+    self.update(self.render(root, entries, newOpts, onclick))
+  }
+
+  function pagination () {
+    if (opts.limit >= visible.length) return
+    var prev = yo`
+        <a href="#" class='pagination' onclick=${prevPage}>Previous</a>
+      `
+    var next = yo`
+        <a href="#" class='pagination' onclick=${nextPage}>Next</a>
+      `
+
+    return yo`<div class='pagination'>
+      ${start > 0 ? prev : ''}
+      ${end < visible.length ? next : ''}
+    </div>`
+  }
+
   function row (entry) {
     function click (e) {
       if (onclick(e, entry) === false) return
       var displayElem = document.getElementById(displayId)
       if (entry.type === 'directory') {
         displayElem.innerHTML = ''
-        self.update(self.render(entry.name, entries, onclick))
+        self.update(self.render(entry.name, entries, opts, onclick))
       }
       if (entry.type === 'file') {
         data.render({
